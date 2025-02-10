@@ -118,13 +118,13 @@ firebase.initializeApp(firebaseConfig);
          <!-- Popup - Player Welcome Modal -->
          <div id="popup" style="display:flex; flex-direction: column; max-width:455px; min-height: 350px;
                 padding: 20px;
-            background-color: white;
+            background-color: #1b5f35;
                 border-radius: 10px;">
                  
-                <label style="margin-bottom: 0; text-align:center; font-weight:bold; margin-top:10px;">Welcome to today's Crossword!</label>
-                  <p id="crosswordDate" style="margin-top: 5px; margin-bottom: 35px; color: grey; font-size: 16px; text-align:center;"></p>
+                <label style="margin-bottom: 0; text-align:center; font-weight:bold; margin-top:10px; color: white;">Welcome to today's Crossword!</label>
+                  <p id="crosswordDate" style="margin-top: 5px; margin-bottom: 35px; color: rgb(106, 179, 119); font-size: 18px; text-align:center;"></p>
 
-                   <label style="font-weight: normal !important; margin-bottom: 10px;" for="nameInput">Enter your name:</label>
+                   <label style="font-weight: normal !important; margin-bottom: 10px; color: white;" for="nameInput">Enter your name:</label>
                   <input style="margin-bottom: 10px;" type="text" id="nameInput" /><br />
                  
                <button onclick="startGame()" style="font-weight:bold; margin-bottom:25px;">Start Crossword</button>
@@ -192,13 +192,13 @@ firebase.initializeApp(firebaseConfig);
 
            <div class="modal-content" style="position:absolute; bottom:0; width: 100%;  
          max-width:455px;height: 400px;
-          background: white; padding:20px; transition: bottom 0.3s;  left: 50%;
+          background: #1b5f35; padding:20px; transition: bottom 0.3s;  left: 50%;
              transform: translateX(-50%);
                  text-align: center;">
 
-                <p style="font-size: 18px; font-weight: bold; margin-bottom: 20px;">YOUR GAME IS PAUSED</p>
-               <p style="font-size: 17px; margin-bottom: 2px; padding-left: 20px;  padding-right: 20px;">Take a break, and return when you're ready.</p>
-                 <p style="font-size: 15px; color: grey; margin-top: 5px; margin-bottom: 25px; padding-left: 20px; padding-right: 20px;">(Don't close the window, you will lose all progress)</p>
+                <p style="font-size: 18px; font-weight: bold; margin-bottom: 20px;color: white;">YOUR GAME IS PAUSED</p>
+               <p style="font-size: 17px; margin-bottom: 2px; padding-left: 20px;  padding-right: 20px;color: white;">Take a break, and return when you're ready.</p>
+                 <p style="font-size: 15px; color: grey; margin-top: 5px; margin-bottom: 25px; padding-left: 20px; padding-right: 20px;color: white;">(Don't close the window, you will lose all progress)</p>
 
                  <button onclick="resumeGame()" style="padding: 10px 20px; font-size: 18px; font-weight: bold;
             color: black;
