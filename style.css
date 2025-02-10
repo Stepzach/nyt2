@@ -120,7 +120,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     width: 100% !important;
-    background-color: #ececec !important;
+   
      /* makes keyboard full width, matches window content container */
     margin-left: auto;
     margin-right: auto;
