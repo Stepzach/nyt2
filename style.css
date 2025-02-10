@@ -28,9 +28,9 @@ body {
     height: 100%;
     max-width: 495px;
     /* set the fixed width, limit at 495px*/
-    border-left: 1px solid lightgrey;
+    border-left: none;
     background-color: #1b5f35;
-    border-right: 1px solid lightgrey;
+    border-right: none;
 }
 
 /* --- Top Navigation --- */
@@ -42,7 +42,7 @@ body {
     padding-bottom: 10px;
     max-width: 495px; /* matches fixed container*/
     background-color: #1b5f35;
-    border-bottom: 1.5px solid #ececec;
+   
     height: 23px;
     margin-left: auto;
     /* Add horizontal margin */
