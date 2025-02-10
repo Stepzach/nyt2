@@ -29,7 +29,7 @@ body {
     max-width: 495px;
     /* set the fixed width, limit at 495px*/
     border-left: 1px solid lightgrey;
-    background-color: white;
+    background-color: #1b5f35;
     border-right: 1px solid lightgrey;
 }
 
@@ -41,7 +41,7 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     max-width: 495px; /* matches fixed container*/
-    background-color: #fff;
+    background-color: #1b5f35;
     border-bottom: 1.5px solid #ececec;
     height: 23px;
     margin-left: auto;
@@ -226,7 +226,7 @@ body {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #1b5f35;
 }
 
 .close {
@@ -251,7 +251,7 @@ body {
       }
 
  #popup {
-            background-color: white;
+            background-color: #1b5f35;
               padding-top: 30px;
              border-radius: 10px;
               text-align: center;
