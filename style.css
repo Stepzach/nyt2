@@ -38,11 +38,12 @@ body {
     position: relative;
     z-index: 10;
     width: 100%;
-     margin-top: 0px;
-    padding-top: -10px;
+     margin-top: -39px;
+    padding-top: 0px;
     padding-bottom: 0px;
     max-width: 495px; /* matches fixed container*/
-    background-color: #1b5f35;
+    background-color: transparennt;
+    
    
     height: 23px;
     margin-left: auto;
