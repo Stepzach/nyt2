@@ -706,32 +706,9 @@ function stopConfetti() {
        };
 
 
-       const disableScrolling = () => {
-           const preventDefault = (e) => e.preventDefault();
-               window.addEventListener('wheel', preventDefault, { passive: false });
-           window.addEventListener('touchmove', preventDefault, { passive: false });
-     window.addEventListener('keydown', (e) => {
-            const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' '];
-                   if (keys.includes(e.key)) {
-                 e.preventDefault();
-             }
-           });
-
-
-       document.documentElement.style.position = 'fixed';
-     document.documentElement.style.overflow = 'hidden';
-           document.documentElement.style.width = '100%';
-          document.documentElement.style.height = '100%';
-
-
-          document.body.style.position = 'fixed';
-          document.body.style.overflow = 'hidden';
-         document.body.style.width = '100%';
-          document.body.style.height = '100%';
-      document.body.style.margin = '0';
-     };
+      
 
 
         disableZoom();
-          disableScrolling();
+        
      })();
