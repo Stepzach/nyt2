@@ -143,21 +143,21 @@ body {
 
 
 #keyboard button {
-    height: 42px;
-    margin: 1px;
-    font-weight: 500;
-    margin-bottom: 8px;
-    font-size: 22px;
-    text-align: center !important;
-    border: 1px solid #e3e3e3;
-    background-color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    color: black;
-    padding: 0;
-    width: 9.5%;
-    font-weight: 500;
-    max-width: 40px;
+  height: 42px;
+margin: 1px;
+font-weight: 500;
+margin-bottom: 8px;
+font-size: 22px;
+text-align: center !important;
+border: 1px solid #143d0e;
+background-color: rgb(136, 218, 153);
+cursor: pointer;
+border-radius: 5px;
+color: black;
+padding: 0;
+width: 9.5%;
+font-weight: 500;
+max-width: 40px;
 }
 
 #keyboard button:hover {
