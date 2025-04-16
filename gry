@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mini Crossword</title>
+
+    <!-- SEO and Social Media Meta Tags -->
+    <meta property="og:title" content="Zach's Mini Xword" />
+    <meta property="og:description" content="Daily mini crossword" />
+     <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+    <link rel="icon" type="image/png" href="icons/IMG_4624.png">
+    <link rel="apple-touch-icon" href="icons/Appletouchicon.png">
+
+
+     
+
+    <!-- Theme Color Meta Tags -->
+    <meta name="theme-color" content="#000">
+    <meta name="msapplication-navbutton-color" content="#000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+     <!-- Caching Meta Tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <!-- External Stylesheets -->
+     <link rel="stylesheet" type="text/css" href="style.css">
+
+    <!-- Firebase Libraries-->
+  <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-database-compat.js"></script>
+<script >
+    
+        // Firebase App (the core Firebase SDK) is always required and
+    // must be listed before other Firebase SDKs
+    import { initializeApp } from 'firebase/app';
+    // Add the Firebase products that you want to use
+    import { getAuth } from "firebase/realtimedatabase";
+     import { getAuth } from "firebase/database";
+             import { getAuth } from "firebase/app";
+             import { getAuth } from "firebase/webapp";
+    import { getFirestore } from "firebase/firestore";
+    
+    // TODO: Replace the following with your app's Firebase project configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBukFC83UnD1r6SaiSv-M95dz9PINFhqWU",
+
+authDomain: "crosswordleader.firebaseapp.com",
+databaseURL: "https://crosswordleader-default-rtdb.europe-west1.firebasedatabase.app",
+projectId: "crosswordleader",
+storageBucket: "crosswordleader.firebasestorage.app",
+messagingSenderId: "762979733536",
+appId: "1:762979733536:web:2f8afc76b9dc1156942c45"
+};
+
+// Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+});
+
+</script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-database-compat.js"></script>
+     <script>
+const firebaseConfig = {
+
+apiKey: "AIzaSyBukFC83UnD1r6SaiSv-M95dz9PINFhqWU",
+authDomain: "crosswordleader.firebaseapp.com",
+databaseURL: "https://crosswordleader-default-rtdb.europe-west1.firebasedatabase.app",
+projectId: "crosswordleader",
+storageBucket: "crosswordleader.firebasestorage.app",
+messagingSenderId: "762979733536",
+appId: "1:762979733536:web:2f8afc76b9dc1156942c45"
+};
+
+</script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+<script>
+
+// Initialize Firebase with your config
+// 3. Initialize Firebase (AFTER SDK scripts are loaded)
+firebase.initializeApp(firebaseConfig);
+
+// 4. Get a reference to the database service
+    const database = firebase.database();
+
+    // 5. Define leaderboardRef globally (so it's accessible to other functions)
+    const leaderboardRef = database.ref('leaderboard');
+
+</script>
+    
+  <!-- Internal Styles -->
+      <style>
+        /* Prevent scrolling caused by focus */
+        *:focus {
+          outline: none;
+        }
+        </style>
+
+
+
+
+</head>
+
+<div id="whole">
+
+  <body style="overflow: hidden; height: 100vh"> <!--Body-->
+
+      <div class="bruhbruh">  <!--Main Parent Container -->
+
+
+       <!-- Overlay Container For Popups-->
+        <div id="overlay" style="display:flex; justify-content:center;"> 
+
+         <!-- Popup - Player Welcome Modal -->
+         <div id="popup" style="display:flex; flex-direction: column; max-width:455px; min-height: 350px;
+                padding: 20px;
+            background-color: #1b5f35;
+                border-radius: 10px;">
+                 
+                <label style="margin-bottom: 0; text-align:center; font-weight:bold; margin-top:10px; color: white;">Welcome to today's Crossword!</label>
+                  <p id="crosswordDate" style="margin-top: 5px; margin-bottom: 35px; color: rgb(106, 179, 119); font-size: 18px; text-align:center;"></p>
+
+                   <label style="font-weight: normal !important; margin-bottom: 10px; color: white;" for="nameInput">Enter your name:</label>
+                  <input style="margin-bottom: 10px;" type="text" id="nameInput" /><br />
+                 
+               <button onclick="startGame()" style="font-weight:bold; margin-bottom:25px;">Start Crossword</button>
+<a href="https://stepzach.github.io/nyt2/leaderboard.html">
+    <button style="font-weight: bold; margin-bottom: 25px; background-color: wheat;">
+        See the Leaderboard
+    </button>
+</a>
+
+                 <p style="color:grey; font-size: 15px;"></p>
+
+
+         </div>
+         <script defer>
+         function updateCrosswordDate() {
+                  const dateElement = document.getElementById('crosswordDate');
+                     const today = new Date();
+
+               // Get day of the week
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                  const dayName = days[today.getDay()];
+
+        // Get day of the month and suffix
+                 const day = today.getDate();
+                  const suffix = (day % 10 === 1 && day !== 11) ? 'st' : (day % 10 === 2 && day !== 12) ? 'nd' : (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
+           // Get month
+                   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const monthName = months[today.getMonth()];
+
+                  // Get year
+                     const year = today.getFullYear();
+               const formattedDate = `${dayName} ${day}${suffix} ${monthName} ${year}`;
+                 dateElement.textContent = formattedDate;
+
+           }
+
+            updateCrosswordDate();
+         </script>
+
+       </div>
+
+
+<div class="header" style="margin-left: auto; margin-right: auto;">
+      
+     <a href="https://www.thegryphon.co.uk/" class="paragraph-950" style="color: #1b5f35;
+/* margin-top: 15px !important; */
+margin-bottom: 2px;
+left: 10px;
+z-index: 100000000;
+font-size: 18px;
+position: relative;
+top: 3px;
+text-decoration: none;">&lt; Return to Homepage<p></p></a>
+
+        
+    </div>
+      <div class="topnav">   <!--Top Navbar -->
+           <div style="float: left; margin-left: 15px">
+              <b id="userNameDisplay" style="font-weight: 100; font-size: 18px; color: transparent;"></b>
+            </div>
+
+        <div style="float: right; margin-right: 12px">
+            <b id="timerDisplay" style="font-weight: 100; color: #1b5f35;">00:00</b>
+        </div>
+
+      <div style="float: right; margin-right: 22px;">   <!--Pause Button-->
+          <button id="pauseButton" style="all: unset; cursor: pointer;" onclick="togglePause()">
+            <img src="https://stepzach.github.io/nyt2/icons/4141_pause-button.png" width="13px" style="opacity: 0.9;">
+          </button>
+      </div>
+    </div>
+
+
+
+     <div id="pauseModal" class="modal" style="display: none; position:fixed; top: 0; left: 0;
+               width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000; border-radius: 10px; overflow: hidden;  ">  <!-- Pause Modal -->
+
+           <div class="modal-content" style="position:absolute; bottom:0; width: 100%;  
+         max-width:455px;height: 400px;
+          background: #1b5f35; padding:20px; transition: bottom 0.3s;  left: 50%;
+             transform: translateX(-50%);
+                 text-align: center;">
+
+                <p style="font-size: 18px; font-weight: bold; margin-bottom: 20px;color: white;">YOUR GAME IS PAUSED</p>
+               <p style="font-size: 17px; margin-bottom: 2px; padding-left: 20px;  padding-right: 20px;color: white;">Take a break, and return when you're ready.</p>
+                 <p style="font-size: 15px; color: grey; margin-top: 5px; margin-bottom: 25px; padding-left: 20px; padding-right: 20px;color: white;">(Don't close the window, you will lose all progress)</p>
+
+                 <button onclick="resumeGame()" style="padding: 10px 20px; font-size: 18px; font-weight: bold;
+            color: black;
+            background-color: rgb(153, 218, 255);
+              border: medium; border-radius: 5px;
+              cursor: pointer;
+                 transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#FFD800'" onmouseout="this.style.backgroundColor='#99DAFF'">RESUME</button>
+             </div>
+
+   </div>
+
+   <br />
+  <div id="confetti-container"></div>
+       <table id="table"></table>  <!--Crossword Grid -->
+
+         <div class="keysize1" style="background-color: rgb(186 210 192 / 70%);"> <!--Keyboard area -->
+
+         <div id="bruh">
+                 
+                  <!--Hints area-->
+                    <div id="hint-container" style="display: flex;
+                  justify-content: space-between;">
+
+                           <button id="prev-hint" onclick="scrollHint(-1)"> < </button>
+                                <span id="hint-text" style="font-size: 16px"></span>
+                           <button id="next-hint" onclick="scrollHint(1)"> > </button>
+                    </div>
+            <div id="keyboard">
+                   <!--Keyboard-->
+                <div class="keyboard-row">
+                   <button onclick="insertChar('Q')">Q</button>
+                <button onclick="insertChar('W')">W</button>
+                <button onclick="insertChar('E')">E</button>
+                  <button onclick="insertChar('R')">R</button>
+                 <button onclick="insertChar('T')">T</button>
+                 <button onclick="insertChar('Y')">Y</button>
+                <button onclick="insertChar('U')">U</button>
+                    <button onclick="insertChar('I')">I</button>
+                 <button onclick="insertChar('O')">O</button>
+                  <button onclick="insertChar('P')">P</button>
+                 </div>
+
+                  <div class="keyboard-row">
+                       <button onclick="insertChar('A')">A</button>
+                      <button onclick="insertChar('S')">S</button>
+                        <button onclick="insertChar('D')">D</button>
+                    <button onclick="insertChar('F')">F</button>
+                     <button onclick="insertChar('G')">G</button>
+                      <button onclick="insertChar('H')">H</button>
+                    <button onclick="insertChar('J')">J</button>
+                 <button onclick="insertChar('K')">K</button>
+                <button onclick="insertChar('L')">L</button>
+              </div>
+       
+              <div class="keyboard-row">
+                 <button onclick="insertChar('Z')">Z</button>
+                 <button onclick="insertChar('X')">X</button>
+                 <button onclick="insertChar('C')">C</button>
+                 <button onclick="insertChar('V')">V</button>
+                    <button onclick="insertChar('B')">B</button>
+                  <button onclick="insertChar('N')">N</button>
+               <button onclick="insertChar('M')">M</button>
+             
+              <button onclick="deleteChar()" style="background-color: rgb(76, 180, 107); font-size: 23px;">
+                <img src="https://stepzach.github.io/nyt2/icons/backspace-icon-2048x1714-fco8gl58.png" width="20px">
+                </button>
+                   </div>
+           </div>
+      </div>
+ </div>
+
+
+     <!-- Congratulations Modal-->
+
+ <div id="congratsModal" class="modal"
+           style="display: none;
+          position: absolute;
+            bottom: 0;
+              width: 100%;
+               max-width: 495px;
+                 height: 500px;
+                   background-color: #1b5f35;
+                      border-radius: 10px;
+                        text-align: center;
+                             z-index: 1001;
+                            box-shadow: rgba(0,0,0,0.2);">
+
+
+      <div style="display: flex; justify-content: flex-end; padding: 10px;">
+          <span id="closeButton" style="cursor: pointer; font-size: 20px;">x</span>
+        </div>
+  
+           <div class="modal-content" style="padding: 0px 30px 30px 30px;">
+              <h2 style="color: white;">Congratulations!</h2>
+               <p id="completionMessage" style="color: white;" >You have successfully completed the crossword.</p>
+                <p style="color: rgb(241, 231, 231); font-size: 15px;">Come back for tomorow's crossword!</p>
+                 <button onclick="window.open('https://stepzach.github.io/nyt/leaderboard' '_self');" style="background-color: #99DAFF;
+                       color: black;
+                 padding: 12px 20px;
+                    font-size: 16px;
+                border: none;
+                   border-radius: 5px;
+                     cursor: pointer;
+                 transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#FFD800'" onmouseout="this.style.backgroundColor='#99DAFF'">See Leaderboard</button>
+      </div>
+ </div>
+
+
+
+<div id="minimizedCongrats"
+       style="display: none; position: fixed;
+                bottom: 0;
+             width: 100%;
+                  max-width: 475px;
+                   text-align: center;
+                    background-color: rgb(52, 103, 69);
+                        padding: 10px;
+                  border-top: 1px solid black; z-index: 1001;">
+
+     <span id="expandButton" style="cursor: pointer; font-size: 20px;">^</span>
+ </div>
+
+
+  <script defer>
+
+  const congratsModal = document.getElementById('congratsModal');
+ const closeButton = document.getElementById('closeButton');
+ const expandButton = document.getElementById('expandButton');
+     const minimizedCongrats = document.getElementById('minimizedCongrats');
+
+
+     closeButton.addEventListener('click', () => {
+     congratsModal.style.display = 'none';
+     minimizedCongrats.style.display = 'block';
+     });
+
+
+    expandButton.addEventListener('click', () => {
+       congratsModal.style.display = 'block';
+         minimizedCongrats.style.display = 'none';
+  });
+
+
+    </script>
+
+      <!-- Try Again Popup -->
+
+    <div id="tryAgainModal" class="modal"
+               style="display: none;
+             position: fixed;
+            top: 50%;
+          left: 50%;
+    transform: translate(-50%, -50%);
+            width: 100%;
+              max-width: 400px;
+               background-color: white;
+             border-radius: 10px;
+            text-align: center;
+             z-index: 1001;
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+
+
+          <div class="modal-content" style="padding: 30px;">
+          <h2>Try Again!</h2>
+        <p>Your current answers are not correct. Keep trying!</p>
+          <button onclick="hideTryAgainPopup()"
+                style="background-color: #99DAFF; color: black;
+                 padding: 12px 20px;
+               font-size: 16px; border: none;
+               border-radius: 5px; cursor: pointer;
+                  transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#FFD800'" onmouseout="this.style.backgroundColor='#99DAFF'">Return to Game</button>
+          </div>
+
+       </div>
+    <!-- Overlay for Popups-->
+    <div id="modalOverlay"
+     style="display: none; position: fixed; top: 0;
+       left: 0;
+           width: 100%;
+      height: 100%;
+           background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+     </div>
+
+
+
+
+</div>
+      <audio id="winSound" src="correct-winner-sting-tomas-herudek-1-00-05.mp3"></audio>
+      
+    <!--Main App Logic: This is where you edit the crossword words and clues -->
+ <script  src="script.js" defer></script>
+
+</body>
+
+</html>
+<style>
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Use border-box model for consistent sizing */
+    height: 100%;
+    /* Ensure body occupies 100% of viewport height */
+    overflow: hidden;
+    /* Disable both vertical and horizontal scrolling */
+    background-color: #d1c8b9;
+   
+}
+entry-header  {
+  display:none !important;
+   
+}
+
+/* Default Font Family And Size for app*/
+* {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    /* Increased base font size */
+}
+
+
+/* --- Layout --- */
+#whole {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 100%;
+    max-width: 495px;
+    /* set the fixed width, limit at 495px*/
+    border-left: none;
+    background-color: #f9f4eb;
+    border-right: none;
+}
+
+/* --- Top Navigation --- */
+.topnav {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+     margin-top: -39px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    max-width: 495px; /* matches fixed container*/
+    background-color: transparennt;
+    
+   
+    height: 23px;
+    margin-left: auto;
+    /* Add horizontal margin */
+    margin-right: auto;
+    /* Add horizontal margin */
+}
+
+
+
+/* ---  Crossword table and Grid cells  ---*/
+#table {
+  position: relative;
+  top: -15px !important;
+  width: 90% !important;
+  max-width: 390px;
+  border-collapse: collapse;
+  /* Required to stop table growing*/
+  border: 3px solid black;
+  /* Thicker outer border */
+  margin-left: auto;
+  margin-right: auto;
+  /* Center the table in it's div container*/
+
+}
+#table td {
+    border: 1px solid gray;
+    /* Thinner inner borders */
+    padding: 0;
+    
+}
+.cell {
+    border-radius: 0;
+    outline: none;
+    border: none;
+    text-align: center;
+    font-size: 40px;
+    opacity: 1;
+    -webkit-text-fill-color: black;
+    box-sizing: border-box;
+    /*Ensure padding and border don't affect size*/
+    padding: 0;
+    padding-top: 15px;
+   
+}
+/* cell background style */
+.black-cell {
+    background-color: black !important;
+}
+.cell-number {
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    font-size: 22px;
+    color: black;
+}
+
+
+/*  --- Input Keyboard -- */
+#keysize1 {
+    z-index: 10;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding-top: 25px;
+    height: 200px;
+    background-color: #ececec !important;
+    display: block;
+    justify-content: center;
+}
+
+
+#keyboard {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100% !important;
+   
+     /* makes keyboard full width, matches window content container */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    padding-top: 17px;
+    padding-bottom: 100px;
+    padding-right: 5px;
+    padding-left: 5px;
+    position: relative;
+    top: 0px;
+    max-width: 495px;
+     /* Fixed size matching window width content*/
+}
+
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+}
+
+
+#keyboard button {
+  height: 42px;
+margin: 1px;
+font-weight: 500;
+margin-bottom: 8px;
+font-size: 22px;
+text-align: center !important;
+border: 1px solid #143d0e;
+background-color: rgb(136, 218, 153);
+cursor: pointer;
+border-radius: 5px;
+color: black;
+padding: 0;
+width: 9.5%;
+font-weight: 500;
+max-width: 40px;
+}
+
+#keyboard button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Hint container */
+#hint-container {
+  z-index: 2;
+  position: relative;
+  top: 0px;
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  /* Ensure width respects set layout */
+  background-color: #1b5f35;
+  /* Light blue background color */
+  padding: 3px;
+     height: 40px;
+    max-width: 490px;
+    /* matches fixed app content container*/
+  margin-left: auto;
+  margin-right: auto;
+  /* positions hints as child on same horizontal x axis in page*/
+}
+#hint-text {
+    width: 100%;
+    font-size: 12px;
+    text-align: left;
+    margin-left: 5px;
+    /* Add horizontal margin */
+    margin-right: 10px;
+    /* Add horizontal margin */
+color: #f9f4eb;
+}
+#prev-hint {
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: transparent;
+  /* Remove button background color */
+  border: none;
+  font-weight: bold;
+  flex-shrink: 0;
+  /* Prevent buttons from shrinking */
+  color: #f9f4eb;
+}
+#next-hint {
+  font-size: 16px;
+  margin-right: 7px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  /* Remove button border */
+  font-weight: bold;
+  flex-shrink: 0;
+  /* Prevent buttons from shrinking */
+  color: #f9f4eb;
+}
+
+
+/* --- Popups Modals  ---*/
+.modal {
+    display: none;
+    /* Hidden by default */
+     width: 100%;
+}
+
+.modal-content {
+    background-color: #1b5f35;
+}
+
+.close {
+    color: #99DAFF;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    /* Add this to change the "x" sign colour*/
+}
+ #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+             width: 100%;
+            height: 100%;
+             background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            display: flex;
+              justify-content: center;
+          align-items: center;
+           z-index: 1000;
+            /* Ensure it's on top */
+      }
+
+ #popup {
+            background-color: #1b5f35;
+              padding-top: 30px;
+             border-radius: 10px;
+              text-align: center;
+             max-width: 495px; /* Limit width to max view port size */
+                 width: 100%;
+            bottom:0px;
+           box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                position: absolute;
+               height: 500px;
+  }
+    #popup label {
+           display: block;
+            margin-bottom: 10px;
+               font-weight: bold;
+                padding-left: 20px;
+                 padding-right: 20px;
+         }
+ #popup input[type="text"] {
+           padding: 10px;
+               border: 1px solid #575757;
+             border-radius: 5px;
+               margin-bottom: 15px;
+                  width: 80%;
+              font-size: 16px;
+                   box-sizing: border-box;
+            background-color: lightgrey;
+                   margin-left: auto;
+                margin-right: auto;
+  }
+
+ #popup button {
+       background-color: #99DAFF;
+                 color: black;
+               padding: 12px 20px;
+              font-size: 16px;
+              border: none;
+              border-radius: 5px;
+           cursor: pointer;
+                 transition: background-color 0.3s ease;
+                width: 80%;
+              margin-left: auto;
+                margin-right: auto;
+   }
+#confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+  #popup button:hover {
+   background-color: #FFD800;
+ }
+</style>
+<script>
+// --- Global Variables ---
+let horizontal = true;
+let maxscore = 100;
+let currentCellX = 0;
+let currentCellY = 1;
+let currentHintIndex = 0;
+let directionMap = {};
+let startTime;
+let timerInterval;
+let isPaused = false;
+let pausedTime = 0;
+let lastClickedCellId = null;
+
+let dailyPuzzleIndex = 0;
+const puzzles = [  {
+       correctSolution: [
+    ["", "L", "I", "N", "K"],
+    ["D", "E", "M", "O", "N"],
+    ["E", "M", "O", "T", "E"],
+    ["M", "O", "U", "S", "E"],
+    ["O", "N", "T", "O", ""],
+           ],
+
+      
+
+
+
+
+      
+
+
+           acrossHints: [
+           "Slang for a meet up with someone, can be sneaky",
+            "A scary supernatural entity",
+              "Dance online (what you might do after a victory royale)",
+              "Computer device or small rodent",
+                "I’m ___ you. (Suspicious of)",
+
+           ],
+            downHints: [
+              "Trial version",
+                "Sour fruit used to treat scurvy",
+                 "Phrase you might say when you leave",
+              "Expression of disagreement",
+               "Bending body part",
+           ],
+
+      
+        cellsWithNumber : {     "i0_1": "1",
+                "i0_2": "2",
+                  "i0_3": "3",
+               "i0_4": "4",
+              "i1_0": "5",
+             "i2_0": "6",
+             "i3_0": "7",
+              "i4_0": "8"
+          }
+
+   },
+
+        
+
+];
+
+// --- Helper Functions ---
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+
+
+function showModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+}
+
+function animTutorial() {
+    const animState = document.getElementById("anim1").style.backgroundColor === "lightblue";
+    const cells = ["anim1", "anim2", "anim3", "anim4"];
+
+    cells.forEach(id => {
+        document.getElementById(id).style.backgroundColor = animState ? "white" : "lightblue";
+    });
+
+    document.getElementById("anim5").style.backgroundColor = animState ? "lightblue" : "white";
+    document.getElementById("anim6").style.backgroundColor = animState ? "lightgray" : "lightblue";
+    document.getElementById("anim7").style.backgroundColor = animState ? "lightblue" : "lightgray";
+}
+
+
+function updateHintText() {
+  const hintTextElement = document.getElementById("hint-text");
+
+     if (horizontal) {
+          hintTextElement.textContent = puzzles[dailyPuzzleIndex].acrossHints[currentCellX] || "";
+      } else {
+        hintTextElement.textContent = puzzles[dailyPuzzleIndex].downHints[currentCellY] || "";
+      }
+ }
+
+function colorSquares() {
+    //Reset colours
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+            let cell = document.getElementById(`i${i}_${j}`);
+             // Determine if the cell should be black based on the position
+             cell.style.backgroundColor = (i === 0 && j === 0) || (i === 4 && j === 4)  ? "black" : "white";;
+          }
+     }
+
+      // Highlight Current word cells and Current Selected cell
+    let start, end;
+     if (horizontal) {
+            start = 0;
+            end = 5;
+          for (let i = start; i < end; i++) {
+                  let cell = document.getElementById(`i${currentCellX}_${i}`);
+                     if (cell && !cell.classList.contains('black-cell')) {
+                       cell.style.backgroundColor = "rgb(186 210 192 / 70%)";
+                 }
+              }
+      } else {
+           start = 0;
+            end = 5;
+                for (let i = start; i < end; i++) {
+                     let cell = document.getElementById(`i${i}_${currentCellY}`);
+                  if (cell && !cell.classList.contains('black-cell')) {
+                 cell.style.backgroundColor = "rgb(186 210 192 / 70%)";
+                  }
+                }
+    }
+            if (document.getElementById(`i${currentCellX}_${currentCellY}`) && !document.getElementById(`i${currentCellX}_${currentCellY}`).classList.contains('black-cell')) {
+         document.getElementById(`i${currentCellX}_${currentCellY}`).style.backgroundColor = "#54a774";
+          }
+
+ }
+
+function initializeGame() {
+    const table = document.getElementById("table");
+    let tableHTML = "";
+        for (let i = 0; i < 5; i++) {
+            tableHTML += "<tr>";
+             for (let j = 0; j < 5; j++) {
+                    const cellId = `i${i}_${j}`;
+             const isBlackCell = (i === 0 && j === 0) || (i === 4 && j === 4);
+
+            tableHTML += `<td><div style="position:relative;">
+             <input
+                   autocomplete='off'
+              readonly
+                 onkeyup='handleKeyUp(event, ${i}, ${j})'
+                onfocus='handleFocus(${i}, ${j})'
+            onclick='handleCellClick(${i}, ${j})'
+                    class='cell ${isBlackCell ? 'black-cell' : ''}'
+                    id='${cellId}'
+                 ${isBlackCell ? "disabled" : ""}
+                     >
+                    <span class="cell-number">${puzzles[dailyPuzzleIndex].cellsWithNumber[cellId] ? puzzles[dailyPuzzleIndex].cellsWithNumber[cellId] : ""}</span>
+           </div></td>`;
+       }
+       tableHTML += "</tr>";
+   }
+   table.innerHTML = tableHTML;
+
+
+    // Initial setup
+    currentCellX = 0;
+    currentCellY = 1;
+    document.getElementById(`i${currentCellX}_${currentCellY}`).focus();
+     colorSquares();
+     updateHintText();
+    adjustSizes();
+}
+
+
+function isWordFilled(direction, startX, startY) {
+    if (direction === 'across') {
+        for (let j = 0; j < 5; j++) {
+            const cell = document.getElementById(`i${startX}_${j}`);
+                if (!cell || cell.disabled || cell.value === "") return false;
+            }
+    } else {
+        for (let i = 0; i < 5; i++) {
+            const cell = document.getElementById(`i${i}_${startY}`);
+            if (!cell || cell.disabled || cell.value === "") return false;
+            }
+      }
+        return true;
+  }
+
+// --- Event Handlers ---
+
+function handleKeyUp(event, i, j) {
+    const currentCell = document.getElementById(`i${i}_${j}`);
+  
+     if (event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
+        currentCell.value = event.key.toUpperCase();
+            moveFocusToNextCell(i, j);
+         } else if (event.key === "Backspace") {
+          if (currentCell.value === "") {
+                 moveFocusToPreviousCell(i, j);
+         }
+            currentCell.value = "";
+           currentCell.style.color = "black";
+       }else if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+                moveFocusWithArrowKeys(event.key, i, j);
+     }
+      colorSquares();
+    updateHintText();
+    if (isPuzzleFilled()) {
+            checkSolution();
+          }
+
+}
+
+
+
+function handleFocus(i, j) {
+   currentCellX = i;
+     currentCellY = j;
+     colorSquares();
+    updateHintText();
+}
+
+
+
+function handleCellClick(clickedX, clickedY) {
+    const cellId = `i${clickedX}_${clickedY}`;
+        const cell = document.getElementById(cellId);
+    
+      if (cell.disabled) return;
+
+
+ if (lastClickedCellId && lastClickedCellId !== cellId) {
+        const lastCell = document.getElementById(lastClickedCellId);
+          if (lastCell) {
+                lastCell.dataset.clickCount = "0";
+                 delete directionMap[lastClickedCellId];
+                }
+      }
+
+ let clickCount = parseInt(cell.dataset.clickCount) || 0;
+    let cellHorizontal = directionMap[cellId] === "across";
+
+    // First click logic
+      if (clickCount === 0) {
+      clickCount = 1;
+         if (clickedX === 0) {
+              cellHorizontal = isWordFilled('down', clickedX, clickedY);
+        } else if (clickedY === 0) {
+             cellHorizontal = !isWordFilled('across', clickedX, clickedY);
+          } else {
+            cellHorizontal = true;
+        }
+     } else {
+
+            if ((clickedX === 0 || clickedY === 0) && clickCount === 1) {
+                cellHorizontal = !cellHorizontal;
+                   clickCount = 0;
+           } else {
+                  cellHorizontal = !cellHorizontal;
+         }
+         clickCount++;
+     }
+
+
+  directionMap[cellId] = cellHorizontal ? "across" : "down";
+      cell.dataset.clickCount = clickCount;
+          horizontal = cellHorizontal;
+      lastClickedCellId = cellId;
+       currentCellX = clickedX;
+       currentCellY = clickedY;
+      cell.focus();
+    updateHintText();
+     colorSquares();
+ }
+function insertChar(char) {
+      const currentCell = document.getElementById(`i${currentCellX}_${currentCellY}`);
+   if (!currentCell.disabled) {
+           currentCell.value = char;
+        moveFocusToNextCell(currentCellX, currentCellY);
+            colorSquares();
+       updateHintText();
+
+      if (isPuzzleFilled()) {
+       checkSolution();
+       }
+
+    }
+ }
+
+
+function deleteChar() {
+    const currentCell = document.getElementById(`i${currentCellX}_${currentCellY}`);
+      if (!currentCell.disabled) {
+         if (currentCell.value === "") {
+            moveFocusToPreviousCell(currentCellX, currentCellY);
+              }
+         currentCell.value = "";
+           currentCell.style.color = "black";
+            colorSquares();
+            updateHintText();
+         }
+  }
+
+
+function scrollHint(direction) {
+        currentHintIndex = horizontal ? currentCellX : currentCellY + 5;
+        currentHintIndex += direction;
+    
+        if (currentHintIndex < 0) {
+           currentHintIndex = 9;
+               horizontal = false;
+       } else if (currentHintIndex > 9) {
+           currentHintIndex = 0;
+               horizontal = true;
+     }
+     if (currentHintIndex >= 5 && currentHintIndex <= 9) {
+               horizontal = false;
+       } else {
+            horizontal = true;
+      }
+
+
+    if (horizontal) {
+          currentCellX = currentHintIndex;
+              currentCellY = 0;
+          } else {
+       currentCellX = 0;
+          currentCellY = currentHintIndex - 5;
+        }
+
+
+ if (horizontal) {
+           for (let tempY = 0; tempY < 5; tempY++) {
+                 if (!document.getElementById(`i${currentCellX}_${tempY}`).disabled) {
+                     currentCellY = tempY;
+                break;
+                }
+        }
+   } else {
+     for (let tempX = 0; tempX < 5; tempX++) {
+         if (!document.getElementById(`i${tempX}_${currentCellY}`).disabled) {
+                currentCellX = tempX;
+                    break;
+              }
+           }
+        }
+
+     while (document.getElementById(`i${currentCellX}_${currentCellY}`).disabled) {
+           if (horizontal) {
+            currentCellY++;
+              if (currentCellY > 4) {
+             currentCellY = 0;
+             currentCellX++;
+              }
+           } else {
+                  currentCellX++;
+            if (currentCellX > 4) {
+           currentCellX = 0;
+            currentCellY++;
+          }
+           }
+           if (currentCellX > 4 || currentCellY > 4) {
+        currentCellX = 0;
+           currentCellY = 0;
+            }
+      }
+       colorSquares();
+        updateHintText();
+    document.getElementById(`i${currentCellX}_${currentCellY}`).focus();
+  }
+
+
+
+ // --- Navigation Functions ---
+    function moveFocusToNextCell(i, j) {
+        let nextCellFound = false;
+          if (horizontal) {
+               for (let newY = j + 1; newY < 5 && !nextCellFound; newY++) {
+                   if (!document.getElementById(`i${i}_${newY}`).disabled) {
+                currentCellX = i;
+             currentCellY = newY;
+            nextCellFound = true;
+                   }
+              }
+       if (!nextCellFound) {
+                   for (let newX = i + 1; newX < 5 && !nextCellFound; newX++) {
+              for (let newY = 0; newY < 5 && !nextCellFound; newY++) {
+                          if (!document.getElementById(`i${newX}_${newY}`).disabled) {
+                      currentCellX = newX;
+                      currentCellY = newY;
+                    nextCellFound = true;
+                  horizontal = true;
+                               }
+                         }
+                    }
+         }
+   } else {
+          for (let newX = i + 1; newX < 5 && !nextCellFound; newX++) {
+           if (!document.getElementById(`i${newX}_${j}`).disabled) {
+                     currentCellX = newX;
+                  currentCellY = j;
+                      nextCellFound = true;
+                  }
+               }
+       if (!nextCellFound) {
+                    for (let newY = j + 1; newY < 5 && !nextCellFound; newY++) {
+                 for (let newX = 0; newX < 5 && !nextCellFound; newX++) {
+                             if (!document.getElementById(`i${newX}_${newY}`).disabled) {
+                          currentCellX = newX;
+                           currentCellY= newY;
+                  nextCellFound = true;
+                    horizontal = false;
+                           }
+                         }
+                 }
+         }
+       }
+
+
+        if (nextCellFound) {
+                document.getElementById(`i${currentCellX}_${currentCellY}`).focus();
+       }
+     }
+
+function moveFocusToPreviousCell(i, j) {
+        let prevCellFound = false;
+            if (horizontal) {
+              for (let newY = j - 1; newY >= 0 && !prevCellFound; newY--) {
+                  if (!document.getElementById(`i${i}_${newY}`).disabled) {
+                       currentCellX = i;
+                currentCellY = newY;
+                    prevCellFound = true;
+                   }
+                }
+         } else {
+          for (let newX = i - 1; newX >= 0 && !prevCellFound; newX--) {
+            if (!document.getElementById(`i${newX}_${j}`).disabled) {
+                      currentCellX= newX;
+                  currentCellY= j;
+                      prevCellFound = true;
+                   }
+                 }
+             }
+
+
+     if (prevCellFound) {
+       document.getElementById(`i${currentCellX}_${currentCellY}`).focus();
+       }
+   }
+
+function moveFocusWithArrowKeys(key, i, j) {
+          if (key === "ArrowLeft" && currentCellY > 0) {
+           currentCellY--;
+        } else if (key === "ArrowRight" && currentCellY< 4) {
+           currentCellY++;
+         } else if (key === "ArrowUp" && currentCellX> 0) {
+             currentCellX--;
+        } else if (key === "ArrowDown" && currentCellX< 4) {
+              currentCellX++;
+           }
+        while (document.getElementById(`i${currentCellX}_${currentCellY}`).disabled) {
+               if (key === "ArrowLeft" && currentCellY > 0) {
+                currentCellY--;
+                 } else if (key === "ArrowRight" && currentCellY< 4) {
+                 currentCellY++;
+               } else if (key === "ArrowUp" && currentCellX> 0) {
+                   currentCellX--;
+                } else if (key === "ArrowDown" && currentCellX< 4) {
+                currentCellX++;
+            }
+        }
+
+
+     document.getElementById(`i${currentCellX}_${currentCellY}`).focus();
+}
+
+
+// --- Game Logic Functions ---
+
+function isPuzzleFilled() {
+  for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                    const cell = document.getElementById(`i${i}_${j}`);
+                if (!cell.disabled && cell.value === "") {
+                   return false;
+            }
+        }
+   }
+   return true;
+
+}
+function checkSolution() {
+        let isCorrect = true;
+      for (let i = 0; i < 5; i++) {
+         for (let j = 0; j < 5; j++) {
+           const cell = document.getElementById(`i${i}_${j}`);
+                  if (!cell.disabled) {
+                   if (cell.value !== puzzles[dailyPuzzleIndex].correctSolution[i][j]) {
+                 isCorrect = false;
+                   break;
+                     }
+                }
+          }
+       if (!isCorrect) break;
+        }
+
+
+      if (isCorrect) {
+           showCongratsPopup();
+             startConfetti();
+              playWinSound();
+           } else {
+            showTryAgainPopup();
+            stopConfetti();
+           }
+    }
+
+    function playWinSound() {
+    const winSound = document.getElementById("winSound");
+     winSound.play();
+}
+
+
+
+// function handlePuzzleCompletion(isCorrect) {}
+
+
+ function showCongratsPopup() {
+      const completionTime = document.getElementById("timerDisplay").textContent;
+          document.getElementById("completionMessage").textContent = `You have successfully completed the crossword in ${completionTime}`;
+         document.getElementById("modalOverlay").style.display = "block";
+             document.getElementById("congratsModal").style.display = "block";
+           clearInterval(timerInterval);
+
+
+           const playerName = document.getElementById("userNameDisplay").textContent;
+
+
+         if (typeof leaderboardRef !== 'undefined') {
+           leaderboardRef.push({
+                   name: playerName,
+            time: completionTime,
+                   timestamp: new Date().toUTCString()
+                })
+             .then(() => {
+               console.log("Leaderboard entry saved successfully!");
+                 })
+                  .catch((error) => {
+             console.error("Error saving leaderboard entry:", error);
+          alert("An error occurred while saving your score. Please try again.");
+                });
+              } else {
+             console.error("Firebase is not initialized. Leaderboard entry not saved.");
+                   alert("An error occurred. Please check your Firebase setup.");
+            }
+    }
+
+
+function showTryAgainPopup() {
+    document.getElementById("modalOverlay").style.display = "block";
+        document.getElementById("tryAgainModal").style.display = "block";
+ }
+
+
+function hideTryAgainPopup() {
+       document.getElementById("modalOverlay").style.display = "none";
+      document.getElementById("tryAgainModal").style.display = "none";
+
+  }
+
+
+ function gotoLeaderboard() {
+    window.location.href = "leaderboard.html";
+   }
+
+
+   // --- Timer Functions ---
+    function togglePause() {
+       isPaused = !isPaused;
+      if (isPaused) {
+            clearInterval(timerInterval);
+                pausedTime = new Date() - startTime;
+              document.getElementById("pauseModal").style.display = "flex";
+        } else {
+          resumeGame();
+     }
+  }
+
+
+ function resumeGame() {
+      document.getElementById("pauseModal").style.display = "none";
+      document.getElementById("modalOverlay").style.display = "none";
+     document.getElementById("congratsModal").style.display = "none";
+
+     if (isPaused) {
+             startTime = new Date() - pausedTime;
+          updateTimerDisplay();
+              timerInterval = setInterval(updateTimerDisplay, 1000);
+           isPaused = false;
+              pausedTime = 0;
+      }
+    }
+
+
+ function updateTimerDisplay() {
+        const currentTime = new Date();
+      const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+      const minutes = Math.floor(elapsedTime / 60).toString().padStart(2, "0");
+          const seconds = (elapsedTime % 60).toString().padStart(2, "0");
+       document.getElementById("timerDisplay").textContent = `${minutes}:${seconds}`;
+    }
+
+
+function startTimer() {
+        startTime = isPaused ? new Date() - pausedTime : new Date();
+       updateTimerDisplay();
+        timerInterval = setInterval(updateTimerDisplay, 1000);
+    }
+function startGame() {
+        const name = document.getElementById("nameInput").value;
+        document.getElementById("userNameDisplay").textContent = name;
+        document.getElementById("overlay").style.display = "none";
+        startTimer();
+    }
+
+
+    function adjustSizes() {
+       const windowWidth = window.innerWidth;
+         const windowHeight = window.innerHeight;
+
+     const containerWidth = Math.min(390, windowWidth * 0.9);
+     const cellSize = containerWidth / 5;
+     const table = document.getElementById("table");
+          table.style.width = `${containerWidth}px`;
+           table.style.height = `${containerWidth}px`;
+
+       const cells = document.querySelectorAll("#table .cell");
+           cells.forEach((cell) => {
+            cell.style.width = `${cellSize}px`;
+                cell.style.height = `${cellSize}px`;
+         });
+     document.getElementById("hint-container").style.width = `${containerWidth}px`;
+    }
+
+    // --- Confetti Functions ---
+function startConfetti() {
+    const confettiContainer = document.getElementById('confetti-container');
+    const numberOfConfetti = 150;
+
+    for (let i = 0; i < numberOfConfetti; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confettiContainer.appendChild(confetti);
+        const hue = Math.random() * 360;
+        confetti.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+    }
+}
+
+function stopConfetti() {
+    const confettiContainer = document.getElementById('confetti-container');
+    confettiContainer.innerHTML = '';
+}
+ function setDailyPuzzle() {
+        const now = new Date();
+     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const diffInDays = Math.floor((now - startOfDay) / (1000 * 60 * 60 * 24));
+    dailyPuzzleIndex = diffInDays % puzzles.length;
+     }
+ // --- Initialization ---
+    window.onload = function () {
+        setDailyPuzzle();
+      setInterval(animTutorial, 2000);
+         initializeGame();
+         adjustSizes();
+         window.addEventListener("resize", adjustSizes);
+      };
+   document.addEventListener("scroll", () => {
+     window.scrollTo(0, 0);
+  }, { passive: false });
+
+
+   // --- Prevent Zooming and Scrolling ---
+
+(function () {
+ const disableZoom = () => {
+        document.addEventListener("gesturestart", (e) => e.preventDefault());
+    document.addEventListener("gesturechange", (e) => e.preventDefault());
+   document.addEventListener("gestureend", (e) => e.preventDefault());
+     document.addEventListener("keydown", (e) => {
+              if ((e.ctrlKey || e.metaKey) && ["+", "-", "0"].includes(e.key)) {
+                 e.preventDefault();
+           }
+          });
+         document.addEventListener('dblclick', (e) => e.preventDefault());
+
+        let viewportMetaTag = document.querySelector("meta[name='viewport']");
+           if (!viewportMetaTag) {
+             viewportMetaTag = document.createElement('meta');
+             viewportMetaTag.name = 'viewport';
+           document.head.appendChild(viewportMetaTag);
+           }
+      viewportMetaTag.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+       };
+
+
+      
+const disableScrolling = () => {
+           const preventDefault = (e) => e.preventDefault();
+               window.addEventListener('wheel', preventDefault, { passive: false });
+           window.addEventListener('touchmove', preventDefault, { passive: false });
+     window.addEventListener('keydown', (e) => {
+            const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' '];
+                   if (keys.includes(e.key)) {
+                 e.preventDefault();
+             }
+           });
+       document.documentElement.style.position = 'fixed';
+     document.documentElement.style.overflow = 'hidden';
+           document.documentElement.style.width = '100%';
+          document.documentElement.style.height = '100%';
+          document.body.style.position = 'fixed';
+          document.body.style.overflow = 'hidden';
+         document.body.style.width = '100%';
+          document.body.style.height = '100%';
+      document.body.style.margin = '0';
+     };
+
+
+        disableZoom();
+          disableScrolling();
+     })();
+</script>
